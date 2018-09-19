@@ -7,11 +7,6 @@ var articleSchema =new Schema({
         type:String,
         required:true
     },
-    // MD5 后的名称
-    transformName:{  
-        type:String,
-        required:true 
-    },
     // 类型
     type:{  
         type:Number,
