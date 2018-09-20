@@ -1,4 +1,3 @@
-# myBlogKoaNodeApi
-个人博客后台系统，学习产物；
-
-由 Express 迁移到 Koa
+# fileServer
+个人博客使用的静态文件存放地址，
+简单的文件服务器
