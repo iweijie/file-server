@@ -5,7 +5,7 @@ const config = require("./config/index")
 const error = require("./app/middleware/error")
 const router = require("./app/middleware/router")
 const etag = require('koa-etag')();
-const koabody = require('koa-body');
+// const koabody = require('koa-body');
 // require('./app/models/index')
 
 const app = new Koa()
@@ -30,7 +30,7 @@ app.use(cors({
 	allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 // 参数解析
-app.use(koabody({multipart: true}))
+// app.use(koabody({multipart: true}))
 
 // 验证是否登入
 // app.use(verifyLogin)

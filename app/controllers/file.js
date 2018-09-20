@@ -8,13 +8,14 @@ const path = require("path")
 const Busboy = require("Busboy")
 const fs = require("fs")
 const safetyType = require("../utils/safetyType")
+const formidable = require('formidable')
 
 // 上传文件存放根目录
 const uploadPath = path.join(__dirname, '../../static/uploads/')
 // fileModel 中 path 的路径 ；
 const fileModelPathRoot = "/static/uploads/"
 
-function uploadFile(files,parmas) {
+function uploadFile(files,fields,fileTypeParmas) {
     var promiseAll = [];
     files.forEach((v,k)=>{
         promiseAll.push(
@@ -24,11 +25,11 @@ function uploadFile(files,parmas) {
                     // 转换后的文件名
                     transformName = rename(v.name) ,
                     // 文件类型对应的路径名称
-                    fileType = parmas[k] ,
+                    fileType = fileTypeParmas[k] ,
                     filePath = path.join(uploadPath, fileType),
                     confirm = mkdirsSync(filePath);
                 if (!confirm) {
-                    return
+                    return reject(new Error("创建文件或文件夹错误")) 
                 }
                     // 保存的路径
                 let saveTo = path.join(filePath ,transformName) ;
@@ -42,83 +43,54 @@ function uploadFile(files,parmas) {
                         name,
                         transformName,
                         type: v.type,
-                        limit: 0,
+                        limit: fields.limit || 0,
                         path:`${fileModelPathRoot}${fileType}/${transformName}`, 
-                        // creator
-                        // creatorId
+                        creator:fields.creator,
+                        creatorId:fields.creatorId
                     })
                 })
-                v.pipe(writeStream)
+                fs.createReadStream(v.path).pipe(writeStream)
             })
         )
     })
     return Promise.all(promiseAll)
-    // return new Promise((resolve, reject) => {
-    //         var fileList = [];
-    //         _emmiter.on('finish', function () {
-    //             console.log("_emmiter finish")
-    //             resolve(fileList)
-    //         })
-    //         _emmiter.on('error', function (err) {
-    //             console.log('err...')
-    //             reject(err)
-    //         })
-    //         _emmiter.on('file', function (fieldname, file, filename, encoding, mimetype) {
-    //             let isSafetyType;
-    //             for(let i =0;i<safetyType.length;i++){
-    //                 if(mimetype ===safetyType[i].type){
-    //                     isSafetyType = i ;
-    //                     break ;
-    //                 }
-    //             }
-    //             if(isSafetyType === undefined ) return 
-    //             const fileType = safetyType[isSafetyType].fileType ;
-    //             const filePath = path.join(options.path, fileType)
-    //             const confirm = mkdirsSync(filePath)
-    //             if (!confirm) {
-    //                 return
-    //             }
-    //             const transformName = rename(filename)
-    //             const saveTo = path.join(path.join(filePath, transformName))
-    //             const writeStream = fs.createWriteStream(saveTo)
-    //             writeStream.on("error",function(err){
-    //                 throw err
-    //             })
-    //             writeStream.on("finish",function(){
-    //                 fileList.push({
-    //                     name: filename,
-    //                     transformName,
-    //                     type: mimetype,
-    //                     limit: 0,
-    //                     path:`${fileModelPathRoot}${fileType}/${transformName}`, 
-    //                     // creator
-    //                     // creatorId
-    //                 })
-    //             })
-    //             file.pipe(writeStream)
-    //         })
-    
-    //         ctx.req.pipe(_emmiter)
-    // })
-    // .catch(err=>{
-    //     console.log(err)
-    //     throw err
-    // })
+            .catch(err=>{throw err})
 }
 
 module.exports = (router) => {
 
     router.post('/fileupload', async function (ctx, next) {
-        const files = ctx.request.files && ctx.request.files.file;
+
+        var result =await new Promise((resolve,reject)=>{
+            var form = new formidable.IncomingForm({
+                multiples : true
+            });
+            form.parse(ctx.req, function(err, fields, files) {
+                console.log(err, fields, files)
+                if(err){
+                    reject(err)
+                }else {
+                    resolve({fields, files})
+                }
+            });
+        })
+        .catch(err=>{
+            throw err
+        })
+        let {files,fields} = result;
+        files = files.file;
+        if(files && !Array.isArray(files)){
+            files = [files]
+        }
         if(!files || !files.length) return ctx.body = {state:0,msg:"未上传文件"};
-        console.log(files)
+        if(!fields.creator || !fields.creatorId) return ctx.body = {state:0,msg:"参数错误"};
         // 获取文件类型路径
-        let parmas = [];
+        let fileTypeParmas = [];
         for(let i =0;i <files.length ; i ++){
             let flag = false;
             for(let j =0;j<safetyType.length;j++){
                 if(files[i].type ===safetyType[j].type){
-                    parmas.push(safetyType[j].fileType)
+                    fileTypeParmas.push(safetyType[j].fileType)
                     flag = true ;
                     break ;
                 }
@@ -127,13 +99,10 @@ module.exports = (router) => {
                 return ctx.body = {state:0,msg:"上传文件格式错误"}
             }
         }
-        // 获取上传文件
-        const result = await uploadFile(files,parmas);
-        ctx.body = {
-            state: 1,
-            msg: "上传成功",
-            // result
-        }
+        console.log(files)
+        console.log(fields)
+        var data =await uploadFile(files,fields,fileTypeParmas);
+        ctx.body = {state:0,msg:"上传文件格式错误",data}
     });
 
 }
