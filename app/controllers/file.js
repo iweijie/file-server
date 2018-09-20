@@ -9,6 +9,7 @@ const Busboy = require("Busboy")
 const fs = require("fs")
 const safetyType = require("../utils/safetyType")
 const formidable = require('formidable')
+const request = require('request')
 
 // 上传文件存放根目录
 const uploadPath = path.join(__dirname, '../../static/uploads/')
@@ -54,19 +55,37 @@ function uploadFile(files,fields,fileTypeParmas) {
         )
     })
     return Promise.all(promiseAll)
-            .catch(err=>{throw err})
 }
 
 module.exports = (router) => {
-
     router.post('/fileupload', async function (ctx, next) {
+        let option = {
+            url:"http://localhost:8000/api/login/check",
+            headers : {
+                'Cookie':ctx.headers.cookie,
+            }
+        }
+        var userInfo =await new Promise((resolve,reject)=>{
+            request.post(option,(err,response,body)=>{
+                if(err){
+                    return reject(err)
+                }
+                try {
+                    body = JSON.parse(body)
+                }catch(error){
+                    return reject(error)
 
+                }
+                resolve(body)
+            })
+        })
+        if(!userInfo || !userInfo.state === 1) return ctx.body = {state:0,msg:"参数错误"};
+        console.log(userInfo)
         var result =await new Promise((resolve,reject)=>{
             var form = new formidable.IncomingForm({
                 multiples : true
             });
             form.parse(ctx.req, function(err, fields, files) {
-                console.log(err, fields, files)
                 if(err){
                     reject(err)
                 }else {
@@ -74,16 +93,13 @@ module.exports = (router) => {
                 }
             });
         })
-        .catch(err=>{
-            throw err
-        })
         let {files,fields} = result;
         files = files.file;
         if(files && !Array.isArray(files)){
             files = [files]
         }
-        if(!files || !files.length) return ctx.body = {state:0,msg:"未上传文件"};
-        if(!fields.creator || !fields.creatorId) return ctx.body = {state:0,msg:"参数错误"};
+        if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
+        if(!fields.creator || !fields.creatorId || fields.creatorId !== userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         // 获取文件类型路径
         let fileTypeParmas = [];
         for(let i =0;i <files.length ; i ++){
@@ -99,8 +115,6 @@ module.exports = (router) => {
                 return ctx.body = {state:0,msg:"上传文件格式错误"}
             }
         }
-        console.log(files)
-        console.log(fields)
         var data =await uploadFile(files,fields,fileTypeParmas);
         ctx.body = {state:0,msg:"上传文件格式错误",data}
     });
