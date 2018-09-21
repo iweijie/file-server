@@ -1,27 +1,22 @@
 const safetyType = [
     {
-        index :0 ,
-        type:"image/png",
+        mimeType:"image/png",
         fileType:"image"
     },
     {
-        index :1 ,
-        type:"image/gif",
+        mimeType:"image/gif",
         fileType:"image"
     },
     {
-        index :2 ,
-        type:"image/jpeg",
+        mimeType:"image/jpeg",
         fileType:"image"
     },
     {
-        index :3 ,
-        type:"image/jpg",
+        mimeType:"image/jpg",
         fileType:"image"
     },
     {
-        index :4 ,
-        type:"application/pdf",
+        mimeType:"application/pdf",
         fileType:"pdf"
     }
 ]

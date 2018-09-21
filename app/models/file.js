@@ -7,9 +7,14 @@ var articleSchema =new Schema({
         type:String,
         required:true
     },
-    // 类型
-    type:{  
-        type:Number,
+    // 分类 （自定义分类）
+    fileType:{  
+        type:String,
+        required:true
+    },
+    // 文件类型 Mime-Type
+    mimeType:{  
+        type:String,
         required:true
     },
     // 0 ： 全部人可见 ； 
