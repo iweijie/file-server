@@ -100,7 +100,8 @@ module.exports = (router) => {
                 return {
                     w:v.w,
                     h:v.h,
-                    url:`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${v.id}.${v.exn}`
+                    smallUrl:`https://wallpapers.wallhaven.cc/wallpapers/small/wallhaven-${v.id}.${v.exn}`,
+                    fullUrl:`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${v.id}.${v.exn}`
                 }
             })
         ctx.body = {state:1,result}
