@@ -100,7 +100,7 @@ module.exports = (router) => {
                 return {
                     w:v.w,
                     h:v.h,
-                    smallUrl:`https://wallpapers.wallhaven.cc/wallpapers/small/wallhaven-${v.id}.${v.exn}`,
+                    smallUrl:`https://alpha.wallhaven.cc/wallpapers/thumb/small/th-${v.id}.${v.exn}`,
                     fullUrl:`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${v.id}.${v.exn}`
                 }
             })
