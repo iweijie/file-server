@@ -1,13 +1,11 @@
 const Koa = require('koa')
 const cors = require('koa2-cors');
 const config = require("./config/index")
-// const verifyLogin = require("./app/middleware/verify_login")
 const error = require("./app/middleware/error")
 const router = require("./app/middleware/router")
 const etag = require('koa-etag')();
-// const koabody = require('koa-body');
-// require('./app/models/index')
-
+// const koaStatic = require('koa-static')
+const path = require("path");
 const app = new Koa()
 // 错误处理
 app.use(error)
@@ -30,10 +28,11 @@ app.use(cors({
 	allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 // 参数解析
-// app.use(koabody({multipart: true}))
-
-// 验证是否登入
-// app.use(verifyLogin)
+// const root = path.resolve(__dirname,"./static/");
+// console.log(root)
+// app.use(koaStatic(root, {
+// 	maxage:30*24*60*60*1000
+// }));
 
 app.use(etag)
 // 引入路由

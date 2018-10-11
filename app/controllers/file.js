@@ -31,7 +31,7 @@ module.exports = (router) => {
                 resolve(body)
             })
         })
-        if(!userInfo || !userInfo.state === 1) return ctx.body = {state:0,msg:"参数错误"};
+        if(!userInfo || !userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         let result = await parseFormData(ctx);
         let {files,fields} = result;
         files = files.file;

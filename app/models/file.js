@@ -32,7 +32,7 @@ var articleSchema =new Schema({
     // 创建时间
     createTime:{
         type:Number,
-        default:Date.now()
+        required:true
     }, 
     //创建人
     creator :{ 

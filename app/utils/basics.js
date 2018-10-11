@@ -122,12 +122,13 @@ function uploadFile(files, fields, fileTypeParmas) {
         writeStream.on("finish", function () {
           resolve({
             name,
-            mimeType: v.mimeType,
+            mimeType: v.type,
             fileType,
             limit: fields.limit || 0,
-            path: `${fileModelPathRoot}${fileType}/${formatTimePath}/${transformName}`,
+            path: `${fileModelPathRoot}${formatTimePath}/${fileType}/${transformName}`,
             creator: fields.creator,
-            creatorId: fields.creatorId
+            creatorId: fields.creatorId,
+            createTime:Date.now()
           })
         })
         fs.createReadStream(v.path).pipe(writeStream)
