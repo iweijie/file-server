@@ -1,7 +1,7 @@
 
 const request = require('request')
 const bodyParser = require('koa-bodyparser')();
-
+const config = require("../../config/index")
 const {
     uploadFile,
     parseFormData
@@ -12,12 +12,13 @@ const {
 const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
 
+let blogUrl = `${config.blogUrl}/api/login/check`;
 
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
-        let option = {
-            url:"http://localhost:8000/api/login/check",
+        let option = {  
             headers : {
+                url:blogUrl,
                 'Cookie':ctx.headers.cookie,
             }
         }
