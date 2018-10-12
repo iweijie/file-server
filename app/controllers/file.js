@@ -21,6 +21,7 @@ module.exports = (router) => {
                 'Cookie':ctx.headers.cookie,
             }
         }
+        console.log("option",option)
         var userInfo =await new Promise((resolve,reject)=>{
             request.post(option,(err,response,body)=>{
                 if(err)return reject(err)
