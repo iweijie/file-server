@@ -13,12 +13,12 @@ const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
 
 let blogUrl = `${config.blogUrl}/api/login/check`;
-
+console.log(blogUrl)
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
         let option = {  
+            url:blogUrl,
             headers : {
-                url:blogUrl,
                 'Cookie':ctx.headers.cookie,
             }
         }
