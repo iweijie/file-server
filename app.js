@@ -16,6 +16,9 @@ app.use(cors({
 			if (ctx.url.test(/^https:\/\/www\.iweijie\.cn.*$/)) {
 				return "https://www.iweijie.cn"
 			}
+			if (ctx.url.test(/^http:\/\/file\.iweijie\.cn.*$/)) {
+				return "http://file.iweijie.cn"
+			}
 			return false;
 		} else {
 			return ctx.headers.origin;
