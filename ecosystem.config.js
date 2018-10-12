@@ -9,7 +9,7 @@ module.exports = {
       name      : 'file-service',
       script    : './app',
       watch     :  true ,
-      ignore_watch : ["node_modules"],
+      ignore_watch : ["node_modules","static"],
       max_memory_restart : "200M" ,
       env: {
         COMMON_VARIABLE: 'true'
