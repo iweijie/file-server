@@ -15,6 +15,8 @@ const fileService = require('../service/fileService');
 let blogUrl = `${config.blogUrl}/api/login/check`;
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
+        console.log("ctx.headers",ctx.headers)
+        console.log("token",ctx.cookies.get("token"))
         let option = {  
             url:blogUrl,
             headers : {
