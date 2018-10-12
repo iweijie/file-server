@@ -12,6 +12,7 @@ db.on('error', function callback(err) { //监听是否有异常
 db.once('open', function callback() { //监听一次打开
     //在这里创建你的模式和模型
     console.log('success connected!');
+    console.log('weijie connected!');
 });
 
 module.exports = db

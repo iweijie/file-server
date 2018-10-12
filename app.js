@@ -4,7 +4,6 @@ const config = require("./config/index")
 const error = require("./app/middleware/error")
 const router = require("./app/middleware/router")
 const etag = require('koa-etag')();
-// const koaStatic = require('koa-static')
 const path = require("path");
 const app = new Koa()
 // 错误处理
