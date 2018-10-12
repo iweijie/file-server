@@ -6,6 +6,8 @@ const router = require("./app/middleware/router")
 const etag = require('koa-etag')();
 const path = require("path");
 const app = new Koa()
+
+require("./app/models");
 // 错误处理
 app.use(error)
 // 跨域处理

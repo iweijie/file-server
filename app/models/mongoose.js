@@ -18,4 +18,5 @@ db.on('connected', function callback() { //监听一次打开
     //在这里创建你的模式和模型
     console.log('success connected!');
 });
+
 module.exports = db
