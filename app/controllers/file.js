@@ -32,6 +32,7 @@ module.exports = (router) => {
                 resolve(body)
             })
         })
+        console.log("userInfo",userInfo)
         if(!userInfo || !userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         let result = await parseFormData(ctx);
         let {files,fields} = result;
@@ -39,6 +40,7 @@ module.exports = (router) => {
         if(files && !Array.isArray(files)){
             files = [files]
         }
+        console.log("files",files)
         if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
         if(!fields.creator || !fields.creatorId || fields.creatorId !== userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         // 获取文件类型路径
