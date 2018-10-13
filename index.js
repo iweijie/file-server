@@ -14,15 +14,15 @@ app.use(error)
 app.use(cors({
 	origin: function (ctx) {
 		if (config.isProduction) {
-			if (ctx.url.test(/^https:\/\/www\.iweijie\.cn.*$/)) {
+			if (ctx.origin.test(/^https:\/\/www\.iweijie\.cn.*$/)) {
 				return "https://www.iweijie.cn"
 			}
-			if (ctx.url.test(/^http:\/\/file\.iweijie\.cn.*$/)) {
+			if (ctx.origin.test(/^http:\/\/file\.iweijie\.cn.*$/)) {
 				return "http://file.iweijie.cn"
 			}
 			return false;
 		} else {
-			return ctx.headers.origin;
+			return ctx.origin;
 		}
 	},
 	// exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
