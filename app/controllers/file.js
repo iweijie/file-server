@@ -12,7 +12,7 @@ const {
 const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
 
-let blogUrl = `${config.blogUrl}/api/login/check`;
+// let blogUrl = `${config.blogUrl}/api/login/check`;
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
         // let option = {  
