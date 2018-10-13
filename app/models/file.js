@@ -1,7 +1,7 @@
 var db = require("./mongoose")
 var Schema = db.Schema
 
-var articleSchema =new Schema({
+var filesSchema =new Schema({
     //原文件名称
     name:{ 
         type:String,
@@ -45,4 +45,4 @@ var articleSchema =new Schema({
         required:true
     }
 })
-module.exports = db.model('article',articleSchema);
+module.exports = db.model('file',filesSchema);
