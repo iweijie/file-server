@@ -17,6 +17,8 @@ module.exports = (app, root = path.resolve(__dirname, "../controllers")) => {
     });
     const routerStatic = new Router();
     routerStatic.get("/static/*",async (ctx,next)=>{
+        console.log(ctx.path)
+        console.log( __dirname + '../../../')
         await send(ctx, ctx.path, { 
             root: __dirname + '../../../' ,
             maxage:30*24*60*60*1000
