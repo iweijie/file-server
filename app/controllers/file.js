@@ -12,41 +12,35 @@ const {
 const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
 
-let blogUrl = `${config.blogUrl}/api/login/check`;
+// let blogUrl = `${config.blogUrl}/api/login/check`;
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
-        console.log("ctx.headers",ctx.headers)
-        console.log("token",ctx.cookies.get("token"))
-        let option = {  
-            url:blogUrl,
-            headers : {
-                'Cookie':ctx.headers.cookie,
-            }
-        }
-        console.log("option",option)
-        var userInfo =await new Promise((resolve,reject)=>{
-            request.post(option,(err,response,body)=>{
-                if(err)return reject(err)
+        // let option = {  
+        //     url:blogUrl,
+        //     headers : {
+        //         'Cookie':ctx.headers.cookie,
+        //     }
+        // }
+        // var userInfo =await new Promise((resolve,reject)=>{
+        //     request.post(option,(err,response,body)=>{
+        //         if(err)return reject(err)
 
-                try { body = JSON.parse(body) }
-                catch(error){ return reject(error)}
+        //         try { body = JSON.parse(body) }
+        //         catch(error){ return reject(error)}
 
-                resolve(body)
-            })
-        })
-        console.log("userInfo",userInfo)
-        if(!userInfo || !userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
+        //         resolve(body)
+        //     })
+        // })
+        // if(!userInfo || !userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         let result = await parseFormData(ctx);
         let {files,fields} = result;
         files = files.file;
         if(files && !Array.isArray(files)){
             files = [files]
         }
-        console.log("files",files)
         if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
-        if(!fields.creator || !fields.creatorId || fields.creatorId !== userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
+        if(!fields.creator || !fields.creatorId ) return ctx.body = {state:0,msg:"参数错误"};
         // 获取文件类型路径
-        console.log("获取文件类型路径")
         let fileTypeParmas = [];
         for(let i =0;i <files.length ; i ++){
             let flag = false;
@@ -61,10 +55,8 @@ module.exports = (router) => {
                 return ctx.body = {state:0,msg:"上传文件格式错误"}
             }
         }
-        console.log("上传文件格式错误",fileTypeParmas)
         let data =await uploadFile(files,fields,fileTypeParmas);
 
-        console.log("uploadFile",data)
         await fileService.addUploadFiles(data) ;
 
         ctx.body = {state:1,msg:"文件上传成功"};

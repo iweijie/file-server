@@ -23,7 +23,7 @@ app.use(cors({
 			}
 			return false;
 		} else {
-			return ctx.headers.origin;
+			return ctx.origin;
 		}
 	},
 	// exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
@@ -32,12 +32,6 @@ app.use(cors({
 	allowMethods: ['POST', 'DELETE', 'OPTIONS'],
 	allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
-// 参数解析
-// const root = path.resolve(__dirname,"./static/");
-// console.log(root)
-// app.use(koaStatic(root, {
-// 	maxage:30*24*60*60*1000
-// }));
 
 app.use(etag)
 // 引入路由
@@ -50,13 +44,12 @@ app.use(async (ctx) => {
 app.listen(config.port)
 
 process.on('unhandledRejection', (err) => {
-	console.log(err)
+	console.log("unhandledRejection",err)
 	console.log("111111111111111")
 	// logger.fatal(`unhandledRejection: ${err.message}, stack: ${err.stack}`);
 });
 
 process.on('uncaughtException', (err) => {
-	console.log(err)
-	console.log("222222222222222")
+	console.log("uncaughtException",err)
 	// logger.fatal(`uncaughtException: ${err.message}, stack: ${err.stack}`);
 });

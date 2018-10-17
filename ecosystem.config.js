@@ -7,7 +7,7 @@ module.exports = {
     // First application
     {
       name      : 'file-service',
-      script    : './app',
+      script    : './index.js',
       watch     :  true ,
       ignore_watch : ["node_modules","static"],
       max_memory_restart : "200M" ,
