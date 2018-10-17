@@ -14,11 +14,12 @@ app.use(error)
 app.use(cors({
 	origin: function (ctx) {
 		if (config.isProduction) {
-			if (ctx.url.test(/^https:\/\/www\.iweijie\.cn.*$/)) {
-				return "https://www.iweijie.cn"
+			
+			if (/^https?:\/\/www\.iweijie\.cn.*$/.test(ctx.href)) {
+				return ctx.headers.origin;
 			}
-			if (ctx.url.test(/^http:\/\/file\.iweijie\.cn.*$/)) {
-				return "http://file.iweijie.cn"
+			if (/^https?:\/\/file\.iweijie\.cn.*$/.test(ctx.href)) {
+				return ctx.headers.origin;
 			}
 			return false;
 		} else {
