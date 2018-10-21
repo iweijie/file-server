@@ -29,7 +29,6 @@ module.exports = (app) => {
         })
     }
     routerStatic.get("/static/*", async (ctx, next) => {
-        console.log("static")
         try {
             let params = /^.+?\/((\d)[a-z0-9]+)\.[a-z]+$/.exec(ctx.path);
             if (params && params[1] && params[2]) {
@@ -63,7 +62,6 @@ module.exports = (app) => {
                 ctx.body = ""
             }
         } catch (err) {
-            console.log("static",err)
             ctx.status = 404
             ctx.body = ""
         }

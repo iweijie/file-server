@@ -13,15 +13,11 @@ app.use(error)
 // 跨域处理
 app.use(cors({
 	origin: function (ctx) {
-		console.log("config.isProduction", config.isProduction)
 		if (config.isProduction) {
-			console.log("ctx.href", ctx.href)
 			if (/^https?:\/\/www\.iweijie\.cn.*$/.test(ctx.href)) {
-				console.log("ctx.headers.origin", ctx.headers.origin)
 				return ctx.headers.origin;
 			}
 			if (/^https?:\/\/file\.iweijie\.cn.*$/.test(ctx.href)) {
-				console.log("ctx.headers.origin", ctx.headers.origin)
 				return ctx.headers.origin;
 			}
 			return false;
