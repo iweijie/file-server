@@ -7,9 +7,9 @@ const file = {
     * @param {Array}       
     * @return {Promise} Promise 对象
     */
-    addUploadFiles : ( arr = [])=>{
+    addUploadFiles: (arr = []) => {
         var promiseAll = []
-        arr.forEach(v=>{
+        arr.forEach(v => {
             let instance = new fileModel(v)
             promiseAll.push(
                 instance.save()
@@ -18,40 +18,45 @@ const file = {
         return Promise.all(promiseAll)
     },
     /*
-    * 
+    * 获取文件列表
     * @param {Object}  参数信息对象 
     * @return {Promise} Promise 对象
     */
-    getUploadFilesList : (params)=>{
-
-    },
-    getArticleList: (id, page, pageSize, userId) => {
+    getUploadFilesList: ({ type, page, pageSize, userId }, field = "name fileType path creator createTime") => {
+        let query = {}
         if (userId) {
-            return articleModel.find(
-                { "$or": [{ classify: id, ispublic: true }, { classify: id, autor: userId }] },
-                "title description classify createTime autor time",
-                { skip: (page - 1) * pageSize, limit: pageSize }
-            )
-                .populate({
-                    path: "autor",
-                    select: "name"
-                })
-                .sort({ "createTime": -1 })
-                .exec()
+            query = {
+                "$or": [
+                    { fileType: type, limit: 0 },
+                    { fileType: type, limit: 1 },
+                    { fileType: type, creatorId: userId, limit: 2 },
+                ]
+            }
 
         } else {
-            return articleModel.find(
-                { classify: id, ispublic: true },
-                "title description classify createTime autor time",
+            query = {
+                fileType: type, limit: 0
+            }
+        }
+        return Promise.all([
+            articleModel.find(
+                query,
+                field,
                 { skip: (page - 1) * pageSize, limit: pageSize }
             )
-                .populate({
-                    path: "autor",
-                    select: "name"
-                })
                 .sort({ "createTime": -1 })
                 .exec()
-        }
+            ,
+            articleModel.countDocuments(query)
+        ])
+    },
+    /*
+    * 存储上传文件信息
+    * @param {Array}       
+    * @return {Promise} Promise 对象
+    */
+    findFileInfo: (query) => {
+        return fileModel.findOne(query)
     },
 }
 

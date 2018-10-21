@@ -34,8 +34,7 @@ module.exports = (router) => {
         if (!confirm) {
           return new Error("创建文件夹错误")
         }
-        let success = 0,
-            err = [] ;
+        let err = [] ;
         for (var i = 0; i < images.length; i++) {
             let key = images[i].key ;
             let option = {

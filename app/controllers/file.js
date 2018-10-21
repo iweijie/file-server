@@ -1,37 +1,15 @@
-
-const request = require('request')
-const bodyParser = require('koa-bodyparser')();
-const config = require("../../config/index")
 const {
     uploadFile,
-    parseFormData
+    parseFormData,
+    getGatParmas
 } = require("../utils/basics")
 const {
     isNumber
 } = require("../utils/is")
 const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
-
-// let blogUrl = `${config.blogUrl}/api/login/check`;
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
-        // let option = {  
-        //     url:blogUrl,
-        //     headers : {
-        //         'Cookie':ctx.headers.cookie,
-        //     }
-        // }
-        // var userInfo =await new Promise((resolve,reject)=>{
-        //     request.post(option,(err,response,body)=>{
-        //         if(err)return reject(err)
-
-        //         try { body = JSON.parse(body) }
-        //         catch(error){ return reject(error)}
-
-        //         resolve(body)
-        //     })
-        // })
-        // if(!userInfo || !userInfo._id) return ctx.body = {state:0,msg:"参数错误"};
         let result = await parseFormData(ctx);
         let {files,fields} = result;
         files = files.file;
@@ -40,6 +18,9 @@ module.exports = (router) => {
         }
         if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
         if(!fields.creator || !fields.creatorId ) return ctx.body = {state:0,msg:"参数错误"};
+        if(fields.limit === undefined || !isNumber(fields.limit) || fields.limit > 2 || fields.limit < 0){
+            fields.limit = 0
+        }
         // 获取文件类型路径
         let fileTypeParmas = [];
         for(let i =0;i <files.length ; i ++){
@@ -63,15 +44,17 @@ module.exports = (router) => {
 
     });
 
-    router.post("/file/:type",bodyParser,async function(ctx , next){
-        var type = ctx.params ;
+    router.get("/file/:type",async function(ctx , next){
+        let type = ctx.params ;
+        let getParams = getGatParmas(ctx.querystring)
         // {"page":1,"pageSize":10}
-        let {page,pageSize} = ctx.request.body ;
-        if(!isNumber(page) || !isNumber(pageSize)) return {state:0,msg:"参数错误"};
-        let params = {page,pageSize};
-        if(type){
-            params.type = type
+        let {page,pageSize,userId} = getParams;
+        if(!type ||!isNumber(page) || !isNumber(pageSize)) return {state:0,msg:"参数错误"};
+        let params = {page,pageSize,type};
+        if(userId){
+            params.userId = userId
         }
-        ctx.body = {state:1,msg:"文件上传成功"};
+        let result = await fileService.getUploadFilesList(params);
+        ctx.body = {state:1,result:result[0],count:result[1]};
     })
 }

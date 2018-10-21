@@ -13,20 +13,9 @@ module.exports = async function (ctx, next) {
         ctx.set("Cache-Control","no-cache, max-age=0");
         ctx.status = err.status || 500 ;
         ctx.type = "application/json";
-
-        if(err.__marsk == errmark){
-            ctx.status = 200 ;
-            ctx.body = {
-                state:err.state ,
-                msg: err.message
-            }
-        }else {
-            let response = err.response || {}
-            ctx.body = { 
-                state:err.code,
-                error:response.body || err.error ,
-                msg: err.message
-            }
+        ctx.body = { 
+            state:0,
+            msg: err.message
         }
         if(!config.isProduction){
             ctx.body.stack = err.stack ;
