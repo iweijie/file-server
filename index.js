@@ -13,12 +13,15 @@ app.use(error)
 // 跨域处理
 app.use(cors({
 	origin: function (ctx) {
+		console.log("config.isProduction", config.isProduction)
 		if (config.isProduction) {
-			
+			console.log("ctx.href", ctx.href)
 			if (/^https?:\/\/www\.iweijie\.cn.*$/.test(ctx.href)) {
+				console.log("ctx.headers.origin", ctx.headers.origin)
 				return ctx.headers.origin;
 			}
 			if (/^https?:\/\/file\.iweijie\.cn.*$/.test(ctx.href)) {
+				console.log("ctx.headers.origin", ctx.headers.origin)
 				return ctx.headers.origin;
 			}
 			return false;
@@ -44,12 +47,12 @@ app.use(async (ctx) => {
 app.listen(config.port)
 
 process.on('unhandledRejection', (err) => {
-	console.log("unhandledRejection",err)
+	console.log("unhandledRejection", err)
 	console.log("111111111111111")
 	// logger.fatal(`unhandledRejection: ${err.message}, stack: ${err.stack}`);
 });
 
 process.on('uncaughtException', (err) => {
-	console.log("uncaughtException",err)
+	console.log("uncaughtException", err)
 	// logger.fatal(`uncaughtException: ${err.message}, stack: ${err.stack}`);
 });
