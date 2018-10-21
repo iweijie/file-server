@@ -18,9 +18,6 @@ module.exports = (router) => {
         }
         if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
         if(!fields.creator || !fields.creatorId ) return ctx.body = {state:0,msg:"参数错误"};
-        if(fields.limit === undefined || !isNumber(fields.limit) || fields.limit > 2 || fields.limit < 0){
-            fields.limit = 0
-        }
         // 获取文件类型路径
         let fileTypeParmas = [];
         for(let i =0;i <files.length ; i ++){

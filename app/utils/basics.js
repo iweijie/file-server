@@ -125,7 +125,7 @@ function uploadFile(files, fields, fileTypeParmas) {
                         name,
                         mimeType: v.type,
                         fileType,
-                        limit: fields.limit,
+                        limit: fields.limit || 0,
                         path: `${fileModelPathRoot}${formatTimePath}/${fileType}/${transformName}`,
                         creator: fields.creator,
                         creatorId: fields.creatorId,
