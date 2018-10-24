@@ -14,7 +14,6 @@ app.use(error)
 app.use(cors({
 	origin: function (ctx) {
 		if (config.isProduction) {
-			console.log(ctx.href)
 			if (/^https?:\/\/file\.iweijie\.cn.*$/.test(ctx.href) ||
 				/^http?:\/\/127\.0\.0\.1.*$/.test(ctx.href)) {
 				return ctx.headers.origin;
@@ -43,7 +42,6 @@ app.listen(config.port)
 
 process.on('unhandledRejection', (err) => {
 	console.log("unhandledRejection", err)
-	console.log("111111111111111")
 	// logger.fatal(`unhandledRejection: ${err.message}, stack: ${err.stack}`);
 });
 

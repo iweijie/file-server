@@ -39,7 +39,7 @@ const file = {
             }
         }
         return Promise.all([
-            articleModel.find(
+            fileModel.find(
                 query,
                 field,
                 { skip: (page - 1) * pageSize, limit: pageSize }
@@ -47,7 +47,7 @@ const file = {
                 .sort({ "createTime": -1 })
                 .exec()
             ,
-            articleModel.countDocuments(query)
+            fileModel.countDocuments(query)
         ])
     },
     /*
