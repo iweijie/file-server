@@ -57,11 +57,11 @@ module.exports = (router) => {
                     resolve({state:1})
                 })
             })
-            if(result.state === 1){
-                success ++ ;
-            }else {
-                err.push(images[i])
-            }
+            // if(result.state === 1){
+            //     success ++ ;
+            // }else {
+            //     err.push(images[i])
+            // }
 
         }
         ctx.body = { state: 1, msg: "文件获取成功" };
