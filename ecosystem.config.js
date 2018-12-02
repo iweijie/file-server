@@ -1,3 +1,5 @@
+let config = require("./config/index")
+
 module.exports = {
   /**
    * Application configuration section
@@ -25,10 +27,10 @@ module.exports = {
    */
   deploy : {
     production : {
-      user : 'weijie',
-      host : '47.104.199.117',
+      user: config.user,
+      host: config.address,
+      port: config.port,
       ref  : 'origin/master',
-      port:"2200",
       ssh_options: "StrictHostKeyChecking=no",
       repo : 'git@github.com:weijie9520/file-server.git',
       path : '/weijie/file-server',
