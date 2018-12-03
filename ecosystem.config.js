@@ -8,8 +8,8 @@ module.exports = {
     {
       name: 'file-service',
       script: './index.js',
-      watch: true,
-      ignore_watch: ["node_modules", "static"],
+      watch: false,
+      ignore_watch: ["node_modules", "static","logs"],
       max_memory_restart: "200M",
       env: {
         COMMON_VARIABLE: 'true'
