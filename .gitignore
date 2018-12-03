@@ -65,5 +65,3 @@ config/
 
 # static 文件目录
 static/
-
-ecosystem.config.js
