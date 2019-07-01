@@ -12,46 +12,46 @@ const fileService = require('../service/fileService');
 module.exports = (router) => {
     router.post('/fileupload', async function (ctx, next) {
         let result = await parseFormData(ctx);
-        let {files,fields} = result;
+        let { files, fields } = result;
         files = files.file;
-        if(files && !Array.isArray(files)){
+        if (files && !Array.isArray(files)) {
             files = [files]
         }
-        if(!files || !files.length) return ctx.body = {state:0,msg:"参数错误"};
-        if(!fields.creator || !fields.creatorId ) return ctx.body = {state:0,msg:"参数错误"};
+        if (!files || !files.length) return ctx.body = { state: 0, msg: "参数错误" };
+        if (!fields.creator || !fields.creatorId) return ctx.body = { state: 0, msg: "参数错误" };
         // 获取文件类型路径
         let fileTypeParmas = [];
-        for(let i =0;i <files.length ; i ++){
+        for (let i = 0; i < files.length; i++) {
             let flag = false;
-            for(let j =0;j<safetyType.length;j++){
-                if(files[i].type ===safetyType[j].mimeType){
+            for (let j = 0; j < safetyType.length; j++) {
+                if (files[i].type === safetyType[j].mimeType) {
                     fileTypeParmas.push(safetyType[j].fileType)
-                    flag = true ;
-                    break ;
+                    flag = true;
+                    break;
                 }
             }
-            if(!flag) {
-                return ctx.body = {state:0,msg:"上传文件格式错误"}
+            if (!flag) {
+                return ctx.body = { state: 0, msg: "上传文件格式错误" }
             }
         }
-        let data =await uploadFile(files,fields,fileTypeParmas);
+        let data = await uploadFile(files, fields, fileTypeParmas);
 
-        await fileService.addUploadFiles(data) ;
+        await fileService.addUploadFiles(data);
 
-        ctx.body = {state:1,msg:"文件上传成功"};
+        ctx.body = { state: 1, msg: "文件上传成功" };
 
     });
 
-    router.get("/filelist",async function(ctx , next){
+    router.get("/file/list", async function (ctx, next) {
         let getParams = getGatParmas(ctx.querystring)
         // {"page":1,"pageSize":10}
-        let {page,pageSize,userId,type} = getParams;
-        if(!type ||!isNumber(page) || !isNumber(pageSize)) return {state:0,msg:"参数错误"};
-        let params = {page,pageSize,type};
-        if(userId){
+        let { page, pageSize, userId, type } = getParams;
+        if (!type || !isNumber(page) || !isNumber(pageSize)) return ctx.body = { state: 0, msg: "参数错误" };
+        let params = { page, pageSize, type };
+        if (userId) {
             params.userId = userId
         }
         let result = await fileService.getUploadFilesList(params);
-        ctx.body = {state:1,result:result[0],count:result[1]};
+        ctx.body = { state: 1, result: result[0], count: result[1] };
     })
 }

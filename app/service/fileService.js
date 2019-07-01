@@ -22,7 +22,7 @@ const file = {
     * @param {Object}  参数信息对象 
     * @return {Promise} Promise 对象
     */
-    getUploadFilesList: ({ type, page, pageSize, userId }, field = "name fileType path creator createTime") => {
+    getUploadFilesList: ({ type, page, pageSize, userId }, field = "name limit mimeType fileType path creator createTime") => {
         let query = {}
         if (userId) {
             query = {
