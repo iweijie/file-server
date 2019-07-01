@@ -4,7 +4,8 @@ const {
     getGatParmas
 } = require("../utils/basics")
 const {
-    isNumber
+    isNumber,
+    isString
 } = require("../utils/is")
 const safetyType = require("../utils/safetyType")
 const fileService = require('../service/fileService');
@@ -41,11 +42,10 @@ module.exports = (router) => {
 
     });
 
-    router.get("/file/:type",async function(ctx , next){
-        let type = ctx.params ;
+    router.get("/filelist",async function(ctx , next){
         let getParams = getGatParmas(ctx.querystring)
         // {"page":1,"pageSize":10}
-        let {page,pageSize,userId} = getParams;
+        let {page,pageSize,userId,type} = getParams;
         if(!type ||!isNumber(page) || !isNumber(pageSize)) return {state:0,msg:"参数错误"};
         let params = {page,pageSize,type};
         if(userId){
