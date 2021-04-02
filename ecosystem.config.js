@@ -25,14 +25,17 @@ module.exports = {
    */
   deploy: {
     production: {
-      user: "weijie",
-      host: "47.104.199.117",
-      port: "2200",
+      user: "root",
+      host: "1.116.9.161",
+      port: "22",
       ref: 'origin/master',
       ssh_options: "StrictHostKeyChecking=no",
       repo: 'git@github.com:weijie9520/file-server.git',
       path: '/weijie/file-server',
-      'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env production'
+      'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env production',
+      env : {
+        NODE_ENV: "production"
+      }
     },
   }
 };
