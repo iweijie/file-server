@@ -23,14 +23,13 @@ let imageJsonPath = path.join(staticPath, "./imageJson");
 // 图片
 const result = [
     { w: 2048, h: 1365, fullUrl: "https://w.wallhaven.cc/full/4v/wallhaven-4vvxx5.jpg", smallUrl: "https://w.wallhaven.cc/full/4v/wallhaven-4vvxx5.jpg" },
-    { w: 3840, h: 2160, fullUrl: "https://w.wallhaven.cc/full/5w/wallhaven-5wk153.jpg", smallUrl: "https://w.wallhaven.cc/full/5w/wallhaven-5wk153.jpg" },
     { w: 1920, h: 1080, fullUrl: "https://w.wallhaven.cc/full/13/wallhaven-13x79v.jpg", smallUrl: "https://w.wallhaven.cc/full/13/wallhaven-13x79v.jpg" },
     { w: 1920, h: 1080, fullUrl: "https://w.wallhaven.cc/full/lm/wallhaven-lmwegp.png", smallUrl: "https://w.wallhaven.cc/full/lm/wallhaven-lmwegp.png" },
     { w: 2560, h: 1440, fullUrl: "https://w.wallhaven.cc/full/ox/wallhaven-ox19m9.jpg", smallUrl: "https://w.wallhaven.cc/full/ox/wallhaven-ox19m9.jpg" },
     { w: 1920, h: 1080, fullUrl: "https://w.wallhaven.cc/full/lm/wallhaven-lmw83y.jpg", smallUrl: "https://w.wallhaven.cc/full/lm/wallhaven-lmw83y.jpg" },
-    { w: 1920, h: 1080, fullUrl: "https://w.wallhaven.cc/full/96/wallhaven-96zv88.jpg", smallUrl: "https://w.wallhaven.cc/full/96/wallhaven-96zv88.jpg" },
     { w: 2560, h: 1600, fullUrl: "https://w.wallhaven.cc/full/54/wallhaven-54lqq0.jpg", smallUrl: "https://w.wallhaven.cc/full/54/wallhaven-54lqq0.jpg" },
 ]
+
 const randomData = (list) => {
     list = [...list]
     const arr = []
