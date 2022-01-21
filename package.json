@@ -16,7 +16,7 @@
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "log4js": "^3.0.5",
+    "log4js": "^6.4.0",
     "mongoose": "^5.2.12",
     "request": "^2.88.0"
   },
